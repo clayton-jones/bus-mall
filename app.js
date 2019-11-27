@@ -2,12 +2,13 @@
 
 // ======= global variables =======
 
+var voteMaxEl = document.getElementById('vote-max');
 var imgContainer = document.getElementById('img-container');
 var imgOne = document.getElementById('imgOne');
 var imgTwo = document.getElementById('imgTwo');
 var imgThree = document.getElementById('imgThree');
 
-
+var voteMax = 25;
 
 var picArray = [];
 
@@ -50,6 +51,10 @@ function populateArray() {
 
 populateArray();
 
+var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}`;
+};
+showVotesLeft();
+
 function generatePics () {
   var index1 = randomIndex(picArray.length);
 
@@ -86,16 +91,20 @@ generatePics();
 imgContainer.addEventListener('click', handleClick);
 
 function handleClick(event) {
-  var vote = event.target.title;
-  console.log('You voted for: ', vote);
-  for (var i = 0; i < picArray.length; i++) {
-    if (vote === picArray[i].name) {
-      // console.log(picArray[i]);
-      picArray[i].clicked++;
+  if (voteMax > 0) {
+    voteMax--;
+    showVotesLeft();
+    var vote = event.target.title;
+    console.log('You voted for: ', vote);
+    for (var i = 0; i < picArray.length; i++) {
+      if (vote === picArray[i].name) {
+        // console.log(picArray[i]);
+        picArray[i].clicked++;
+      }
     }
+    console.table(picArray);
+    generatePics();
   }
-  console.table(picArray);
-  generatePics();
 }
 
 
