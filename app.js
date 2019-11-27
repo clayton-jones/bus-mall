@@ -12,7 +12,12 @@ var voteMax = 25;
 
 var picArray = [];
 
-// constructor function
+// ======= end global variables =======
+
+
+// ======= global functions =======
+
+// picture constructor function
 function Picture(src, name) {
   this.src = `./img/${src}.jpg`;
   this.name = name;
@@ -21,11 +26,12 @@ function Picture(src, name) {
   picArray.push(this);
 }
 
-// function from MDN
+// random function from MDN
 function randomIndex(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+// creates picture objects which stores in picArray
 function populateArray() {
   new Picture('bag', 'Bag');
   new Picture('banana', 'Banana');
@@ -51,8 +57,10 @@ function populateArray() {
 
 populateArray();
 
+// displays votes left to user
 var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}`;
 };
+
 showVotesLeft();
 
 function generatePics () {
@@ -86,7 +94,11 @@ function generatePics () {
 
 generatePics();
 
-// console.table(picArray);
+// ======= end global functions =======
+
+
+
+// ======= event listeners =======
 
 imgContainer.addEventListener('click', handleClick);
 
@@ -107,4 +119,5 @@ function handleClick(event) {
   }
 }
 
+// ======= end event listeners =======
 
