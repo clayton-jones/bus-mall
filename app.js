@@ -1,19 +1,31 @@
 'use strict';
 
 // ======= global variables =======
-// var imgContainer = document.getElementById('img-container');
+
+var imgContainer = document.getElementById('img-container');
+var imgOne = document.getElementById('imgOne');
+var imgTwo = document.getElementById('imgTwo');
+var imgThree = document.getElementById('imgThree');
+
+
 
 var picArray = [];
 
+// constructor function
 function Picture(src, name) {
-  this.src = `./images/${src}.jpg`;
+  this.src = `./img/${src}.jpg`;
   this.name = name;
   this.viewed = 0;
   this.clicked = 0;
   picArray.push(this);
 }
 
-function generatePics() {
+// function from MDN
+function randomIndex(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function populateArray() {
   new Picture('bag', 'Bag');
   new Picture('banana', 'Banana');
   new Picture('bathroom', 'Bathroom');
@@ -36,12 +48,45 @@ function generatePics() {
   new Picture('wine-glass', 'Wine Glass');
 }
 
+populateArray();
+
+function generatePics () {
+  var index1 = randomIndex(picArray.length);
+
+  imgOne.src = picArray[index1].src;
+  imgOne.title = picArray[index1].name;
+  imgOne.alt = picArray[index1].name;
+  picArray[index1].viewed++;
+
+  var index2 = randomIndex(picArray.length);
+  while (index2 === index1) {
+    index2 = randomIndex(picArray.length);
+  }
+
+  imgTwo.src = picArray[index2].src;
+  imgTwo.title = picArray[index2].name;
+  imgTwo.alt = picArray[index2].name;
+  picArray[index2].viewed++;
+
+  var index3 = randomIndex(picArray.length);
+  while (index3 === index1 || index3 === index2) {
+    index3 = randomIndex(picArray.length);
+  }
+
+  imgThree.src = picArray[index3].src;
+  imgThree.title = picArray[index3].name;
+  imgThree.alt = picArray[index3].name;
+  picArray[index3].viewed++;
+}
+
 generatePics();
 
-console.table(picArray);
 
 // imgContainer.addEventListener('click', handleClick);
 
 // function handleClick(event) {
 
 // }
+
+
+console.table(picArray);
