@@ -103,19 +103,22 @@ generatePics();
 imgContainer.addEventListener('click', handleClick);
 
 function handleClick(event) {
+  voteMax--;
+  showVotesLeft();
   if (voteMax > 0) {
-    voteMax--;
-    showVotesLeft();
     var vote = event.target.title;
-    console.log('You voted for: ', vote);
+    // console.log('You voted for: ', vote);
     for (var i = 0; i < picArray.length; i++) {
       if (vote === picArray[i].name) {
         // console.log(picArray[i]);
         picArray[i].clicked++;
       }
     }
-    console.table(picArray);
+    // console.table(picArray);
     generatePics();
+  } else {
+    imgContainer.removeEventListener('click', handleClick);
+    console.log('Event handler removed!');
   }
 }
 
