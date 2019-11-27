@@ -81,12 +81,21 @@ function generatePics () {
 
 generatePics();
 
+// console.table(picArray);
 
-// imgContainer.addEventListener('click', handleClick);
+imgContainer.addEventListener('click', handleClick);
 
-// function handleClick(event) {
+function handleClick(event) {
+  var vote = event.target.title;
+  console.log('You voted for: ', vote);
+  for (var i = 0; i < picArray.length; i++) {
+    if (vote === picArray[i].name) {
+      // console.log(picArray[i]);
+      picArray[i].clicked++;
+    }
+  }
+  console.table(picArray);
+  generatePics();
+}
 
-// }
 
-
-console.table(picArray);
