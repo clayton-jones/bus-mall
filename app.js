@@ -69,36 +69,6 @@ var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}
 
 showVotesLeft();
 
-// add array?
-// function generatePics () {
-//   var index1 = randomIndex(picArray.length);
-
-//   imgOne.src = picArray[index1].src;
-//   imgOne.title = picArray[index1].name;
-//   imgOne.alt = picArray[index1].name;
-//   picArray[index1].viewed++;
-
-//   var index2 = randomIndex(picArray.length);
-//   while (index2 === index1) {
-//     index2 = randomIndex(picArray.length);
-//   }
-
-//   imgTwo.src = picArray[index2].src;
-//   imgTwo.title = picArray[index2].name;
-//   imgTwo.alt = picArray[index2].name;
-//   picArray[index2].viewed++;
-
-//   var index3 = randomIndex(picArray.length);
-//   while (index3 === index1 || index3 === index2) {
-//     index3 = randomIndex(picArray.length);
-//   }
-
-//   imgThree.src = picArray[index3].src;
-//   imgThree.title = picArray[index3].name;
-//   imgThree.alt = picArray[index3].name;
-//   picArray[index3].viewed++;
-// }
-
 function generatePics () {
   removeImages();
 
@@ -126,11 +96,9 @@ generatePics();
 function displayList() {
   var ulEl = document.createElement('ul');
   for (var i = 0; i < picArray.length; i++) {
-    if (picArray[i].clicked > 0) {
-      var liEl = document.createElement('li');
-      liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
-      ulEl.appendChild(liEl);
-    }
+    var liEl = document.createElement('li');
+    liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
+    ulEl.appendChild(liEl);
   }
   dataEl.appendChild(ulEl);
 }
@@ -159,14 +127,11 @@ function handleClick(event) {
     showVotesLeft();
     if (voteMax > 0) {
       var vote = event.target.title;
-      // console.log('You voted for: ', vote);
       for (var i = 0; i < picArray.length; i++) {
         if (vote === picArray[i].name) {
-          // console.log(picArray[i]);
           picArray[i].clicked++;
         }
       }
-      // console.table(picArray);
       generatePics();
     } else {
       imgContainer.removeEventListener('click', handleClick);
