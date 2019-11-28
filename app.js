@@ -3,10 +3,13 @@
 // ======= global variables =======
 
 var voteMaxEl = document.getElementById('vote-max');
+
 var imgContainer = document.getElementById('img-container');
 var imgOne = document.getElementById('imgOne');
 var imgTwo = document.getElementById('imgTwo');
 var imgThree = document.getElementById('imgThree');
+
+var dataEl = document.getElementById('data');
 
 var voteMax = 25;
 
@@ -94,6 +97,19 @@ function generatePics () {
 
 generatePics();
 
+function displayList() {
+  var ulEl = document.createElement('ul');
+  for (var i = 0; i < picArray.length; i++) {
+    if (picArray[i].clicked > 0) {
+      var liEl = document.createElement('li');
+      liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
+      ulEl.appendChild(liEl);
+    }
+  }
+  dataEl.appendChild(ulEl);
+}
+
+
 // ======= end global functions =======
 
 
@@ -119,6 +135,7 @@ function handleClick(event) {
   } else {
     imgContainer.removeEventListener('click', handleClick);
     console.log('Event handler removed!');
+    displayList();
   }
 }
 
