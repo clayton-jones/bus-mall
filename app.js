@@ -113,7 +113,7 @@ function removeImages() {
   imgOne.remove();
   imgTwo.remove();
   imgThree.remove();
-  voteMaxEl.remove();
+  voteMaxEl.textContent = '';
 }
 
 

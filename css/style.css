@@ -1,0 +1,15 @@
+img {
+  display: inline-block;
+  width: 10%;
+  max-height: 431px;
+  margin: auto 10px;
+  outline: 2px solid black;
+  padding: 10px;
+}
+
+#img-container {
+  outline: 3px solid black;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+}
