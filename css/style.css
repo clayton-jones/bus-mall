@@ -1,0 +1,27 @@
+body {
+  width: 80%;
+  margin: auto;
+}
+
+img {
+  display: inline-block;
+  width: 10%;
+  max-height: 431px;
+  margin: auto 10px;
+  outline: 2px solid black;
+  padding: 10px;
+}
+
+#img-container {
+  outline: 3px solid black;
+  padding: 20px;
+  margin: 20px auto;
+  text-align: center;
+  width: 75%;
+}
+
+#data {
+  text-align: center;
+  margin-top: 50px;
+}
+
