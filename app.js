@@ -109,6 +109,13 @@ function displayList() {
   dataEl.appendChild(ulEl);
 }
 
+function removeImages() {
+  imgOne.remove();
+  imgTwo.remove();
+  imgThree.remove();
+  voteMaxEl.remove();
+}
+
 
 // ======= end global functions =======
 
@@ -136,6 +143,7 @@ function handleClick(event) {
     imgContainer.removeEventListener('click', handleClick);
     console.log('Event handler removed!');
     displayList();
+    removeImages();
   }
 }
 
