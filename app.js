@@ -5,11 +5,10 @@
 var voteMaxEl = document.getElementById('vote-max');
 
 var imgContainer = document.getElementById('img-container');
-var imgOne = document.getElementById('imgOne');
-var imgTwo = document.getElementById('imgTwo');
-var imgThree = document.getElementById('imgThree');
+// var imgOne = document.getElementById('imgOne');
+// var imgTwo = document.getElementById('imgTwo');
+// var imgThree = document.getElementById('imgThree');
 
-// var imagesToRemove = document.getElementsByTagName('img');
 
 var dataEl = document.getElementById('data');
 
@@ -17,7 +16,7 @@ var voteMax = 25;
 
 var picArray = [];
 
-// var totalImages = 5;
+var totalImages = 5;
 
 // ======= end global variables =======
 
@@ -69,61 +68,58 @@ var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}
 };
 
 showVotesLeft();
+
 // add array?
-function generatePics () {
-  var index1 = randomIndex(picArray.length);
-
-  imgOne.src = picArray[index1].src;
-  imgOne.title = picArray[index1].name;
-  imgOne.alt = picArray[index1].name;
-  picArray[index1].viewed++;
-
-  var index2 = randomIndex(picArray.length);
-  while (index2 === index1) {
-    index2 = randomIndex(picArray.length);
-  }
-
-  imgTwo.src = picArray[index2].src;
-  imgTwo.title = picArray[index2].name;
-  imgTwo.alt = picArray[index2].name;
-  picArray[index2].viewed++;
-
-  var index3 = randomIndex(picArray.length);
-  while (index3 === index1 || index3 === index2) {
-    index3 = randomIndex(picArray.length);
-  }
-
-  imgThree.src = picArray[index3].src;
-  imgThree.title = picArray[index3].name;
-  imgThree.alt = picArray[index3].name;
-  picArray[index3].viewed++;
-}
-
 // function generatePics () {
+//   var index1 = randomIndex(picArray.length);
 
-//   for (var i = 0; i < imagesToRemove.length; i++) {
-//     console.log('removed image!', i);
-//     imgContainer.removeChild(imagesToRemove[i]);
+//   imgOne.src = picArray[index1].src;
+//   imgOne.title = picArray[index1].name;
+//   imgOne.alt = picArray[index1].name;
+//   picArray[index1].viewed++;
+
+//   var index2 = randomIndex(picArray.length);
+//   while (index2 === index1) {
+//     index2 = randomIndex(picArray.length);
 //   }
 
-//   var indexArray = [];
-//   for (var j = 0; j < totalImages; j++) {
-//     var index1 = randomIndex(picArray.length);
+//   imgTwo.src = picArray[index2].src;
+//   imgTwo.title = picArray[index2].name;
+//   imgTwo.alt = picArray[index2].name;
+//   picArray[index2].viewed++;
 
-//     while(indexArray.includes(index1)) {
-//       index1 = randomIndex(picArray.length);
-//     }
-//     indexArray.push(index1);
-
-//     var img = document.createElement('img');
-
-//     img.src = picArray[index1].src;
-//     img.title = picArray[index1].name;
-//     img.alt = picArray[index1].name;
-//     picArray[index1].viewed++;
-//     imgContainer.appendChild(img);
+//   var index3 = randomIndex(picArray.length);
+//   while (index3 === index1 || index3 === index2) {
+//     index3 = randomIndex(picArray.length);
 //   }
+
+//   imgThree.src = picArray[index3].src;
+//   imgThree.title = picArray[index3].name;
+//   imgThree.alt = picArray[index3].name;
+//   picArray[index3].viewed++;
 // }
+
+function generatePics () {
+  removeImages();
+
+  var indexArray = [];
+  for (var j = 0; j < totalImages; j++) {
+    var index1 = randomIndex(picArray.length);
+
+    while(indexArray.includes(index1)) {
+      index1 = randomIndex(picArray.length);
+    }
+    indexArray.push(index1);
+
+    var img = document.createElement('img');
+
+    img.src = picArray[index1].src;
+    img.title = picArray[index1].name;
+    img.alt = picArray[index1].name;
+    picArray[index1].viewed++;
+    imgContainer.appendChild(img);
+  }
+}
 
 generatePics();
 
@@ -140,10 +136,11 @@ function displayList() {
 }
 
 function removeImages() {
-  imgOne.remove();
-  imgTwo.remove();
-  imgThree.remove();
-  voteMaxEl.textContent = '';
+  var imageToRemove = imgContainer.lastChild;
+  while (imageToRemove !== null) {
+    imageToRemove.remove();
+    imageToRemove = imgContainer.lastChild;
+  }
 }
 
 
