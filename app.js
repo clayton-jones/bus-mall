@@ -16,7 +16,7 @@ var voteMax = 25;
 
 var picArray = [];
 
-var totalImages = 5;
+var totalImages = 3;
 
 // ======= end global variables =======
 
@@ -154,7 +154,6 @@ imgContainer.addEventListener('click', handleClick);
 
 function handleClick(event) {
   if (typeof event.target.src !== 'undefined') {
-    console.log('Good to go');
 
     voteMax--;
     showVotesLeft();
@@ -171,7 +170,6 @@ function handleClick(event) {
       generatePics();
     } else {
       imgContainer.removeEventListener('click', handleClick);
-      console.log('Event handler removed!');
       displayList();
       removeImages();
     }
