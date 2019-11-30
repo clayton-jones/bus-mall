@@ -12,11 +12,11 @@ var imgContainer = document.getElementById('img-container');
 
 var dataEl = document.getElementById('data');
 
-var voteMax = 25;
+var voteMax = 10;
 
 var picArray = [];
 
-var totalImages = 3;
+var totalImages = 5;
 
 // ======= end global variables =======
 
@@ -29,6 +29,7 @@ function Picture(src, name) {
   this.name = name;
   this.viewed = 0;
   this.clicked = 0;
+  this.prevSet = false;
   picArray.push(this);
 }
 
@@ -76,7 +77,7 @@ function generatePics () {
   for (var j = 0; j < totalImages; j++) {
     var index1 = randomIndex(picArray.length);
 
-    while(indexArray.includes(index1)) {
+    while(indexArray.includes(index1) || picArray[index1].prevSet) {
       index1 = randomIndex(picArray.length);
     }
     indexArray.push(index1);
@@ -89,6 +90,16 @@ function generatePics () {
     picArray[index1].viewed++;
     imgContainer.appendChild(img);
   }
+
+  for (var h = 0; h < picArray.length; h++) {
+    picArray[h].prevSet = false;
+  }
+
+  for (var i = 0; i < indexArray.length; i++) {
+
+    picArray[indexArray[i]].prevSet = true;
+  }
+  console.table(picArray);
 }
 
 generatePics();
@@ -105,7 +116,7 @@ function displayList() {
 
 function removeImages() {
   var imageToRemove = imgContainer.lastChild;
-  while (imageToRemove !== null) {
+  while (imageToRemove) {
     imageToRemove.remove();
     imageToRemove = imgContainer.lastChild;
   }
@@ -121,7 +132,7 @@ function removeImages() {
 imgContainer.addEventListener('click', handleClick);
 
 function handleClick(event) {
-  if (typeof event.target.src !== 'undefined') {
+  if (event.target.src) {
 
     voteMax--;
     showVotesLeft();
