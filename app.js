@@ -12,11 +12,15 @@ var imgContainer = document.getElementById('img-container');
 
 var dataEl = document.getElementById('data');
 
-var voteMax = 10;
+var voteMax = 25;
 
 var picArray = [];
 
-var totalImages = 5;
+var totalImages = 3;
+
+var namesArray = [];
+var viewsArray = [];
+var clicksArray = [];
 
 // ======= end global variables =======
 
@@ -73,7 +77,7 @@ showVotesLeft();
 function generatePics () {
   removeImages();
 
-  var indexArray = [];
+  var indexArray = []; // make this global? and use it to check dupes on next iteration
   for (var j = 0; j < totalImages; j++) {
     var index1 = randomIndex(picArray.length);
 
@@ -122,6 +126,14 @@ function removeImages() {
   }
 }
 
+function createDataArrays() {
+  for (var i = 0; i < picArray.length; i++) {
+    namesArray.push(picArray[i].name);
+    viewsArray.push(picArray[i].viewed);
+    clicksArray.push(picArray[i].clicked);
+  }
+}
+
 
 // ======= end global functions =======
 
@@ -148,8 +160,41 @@ function handleClick(event) {
       imgContainer.removeEventListener('click', handleClick);
       displayList();
       removeImages();
+      createDataArrays();
+      displayChart();
     }
   }
 }
 
 // ======= end event listeners =======
+
+
+// ======= ChartJS =======
+
+function displayChart () {
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: namesArray,
+      datasets: [{
+        label: 'Votes',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: clicksArray
+      },
+      {
+        label: 'Views',
+        backgroundColor: 'rgb(0, 0, 0)',
+        borderColor: 'rgb(0, 0, 0)',
+        data: viewsArray
+      }]
+    },
+
+    // Configuration options go here
+    options: {}
+  });
+}
