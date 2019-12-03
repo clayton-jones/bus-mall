@@ -12,11 +12,13 @@ var imgContainer = document.getElementById('img-container');
 
 var dataEl = document.getElementById('data');
 
-var voteMax = 25;
+var voteMax = 10;
+var totalImages = 3;
 
 var picArray = [];
 
-var totalImages = 3;
+
+var prevSetIndexes = [];
 
 var namesArray = [];
 var viewsArray = [];
@@ -77,11 +79,11 @@ showVotesLeft();
 function generatePics () {
   removeImages();
 
-  var indexArray = []; // make this global? and use it to check dupes on next iteration
+  var indexArray = [];
   for (var j = 0; j < totalImages; j++) {
     var index1 = randomIndex(picArray.length);
 
-    while(indexArray.includes(index1) || picArray[index1].prevSet) {
+    while(indexArray.includes(index1) || prevSetIndexes.includes(index1)) {
       index1 = randomIndex(picArray.length);
     }
     indexArray.push(index1);
@@ -95,14 +97,16 @@ function generatePics () {
     imgContainer.appendChild(img);
   }
 
-  for (var h = 0; h < picArray.length; h++) {
-    picArray[h].prevSet = false;
-  }
+  prevSetIndexes = indexArray;
 
-  for (var i = 0; i < indexArray.length; i++) {
+  // for (var h = 0; h < picArray.length; h++) {
+  //   picArray[h].prevSet = false;
+  // }
 
-    picArray[indexArray[i]].prevSet = true;
-  }
+  // for (var i = 0; i < indexArray.length; i++) {
+
+  //   picArray[indexArray[i]].prevSet = true;
+  // }
   console.table(picArray);
 }
 
