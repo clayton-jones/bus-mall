@@ -12,8 +12,8 @@ var chartContainer = document.getElementById('chartContainer');
 
 var dataEl = document.getElementById('data');
 
-var voteMax = 15;
-var totalImages = 4;
+var voteMax = 25;
+var totalImages = 3;
 
 var picArray = [];
 
@@ -179,7 +179,12 @@ function handleClick(event) {
 
 // ======= ChartJS =======
 
+
 function displayChart () {
+  Chart.defaults.global.animation.duration = 1600;
+  Chart.defaults.global.animation.easing = 'easeOutCirc';
+  Chart.defaults.global.defaultFontColor = 'rgb(245, 245, 245)';
+
   var ctx = document.getElementById('myChart').getContext('2d');
   var chart = new Chart(ctx, {
     // The type of chart we want to create
@@ -190,19 +195,30 @@ function displayChart () {
       labels: namesArray,
       datasets: [{
         label: 'Votes',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgb(76, 173, 252)',
+        borderColor: 'rgb(76, 173, 252)',
         data: clicksArray
       },
       {
         label: 'Views',
-        backgroundColor: 'rgb(0, 0, 0)',
-        borderColor: 'rgb(0, 0, 0)',
+        backgroundColor: 'rgb(245, 245, 245)',
+        borderColor: 'rgb(245, 245, 245)',
         data: viewsArray
       }]
     },
 
     // Configuration options go here
-    options: {}
+    options: {
+      legend: {
+        position: 'bottom'
+      },
+      title: {
+        text: 'Voting Results',
+        display: true,
+        fontSize: 18,
+        padding: 30,
+        fontColor: 'rgb(245, 245, 245)'
+      }
+    }
   });
 }

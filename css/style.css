@@ -1,6 +1,6 @@
 body {
   margin: auto;
-  /* background-color: rgb(21, 102, 209); */
+  background-color: rgb(7, 28, 56);
   width: 85%;
 }
 
@@ -8,7 +8,9 @@ h1 {
   width: 50%;
   text-align: center;
   margin: 20px auto;
-  font-size: 20px;
+  font-size: 35px;
+  color: whitesmoke;
+  font-family: 'Fjalla One', sans-serif;
 }
 
 img {
@@ -17,18 +19,18 @@ img {
   min-height: 120px;
   max-height: 120px;
   margin: 10px 10px;
-  border: 8px solid rgb(116, 113, 113);
+  border: 8px solid rgb(68, 116, 179);
   border-radius: 5px;
   border-style: outset;
   padding: 10px;
 }
 
 img:hover {
-  border: 8px solid rgb(202, 197, 197);
+  border: 8px solid rgb(193, 207, 224);
 }
 
 #img-container {
-  outline: 3px solid black;
+  outline: 3px solid rgb(245, 245, 245);
   padding: 20px;
   margin: 20px auto;
   text-align: center;
@@ -37,16 +39,34 @@ img:hover {
 
 #data {
   text-align: center;
-  font-size: 12px;
   width: 30%;
   margin: 20px auto;
-  outline: 3px solid red;
+  color: whitesmoke;
+  font-family: 'Source Code Pro', monospace;
 }
+
+#data > p {
+  margin-bottom: 10px;
+}
+
+#vote-max {
+  font-size: 18px;
+  font-style: italic;
+}
+
 
 #chartContainer {
   display: none;
   width: 75%;
   margin: auto;
-  outline: 3px solid purple;
+  border: 3px solid rgb(245, 245, 245);
+  border-style: outset;
   padding: 10px;
+}
+
+.bar {
+  height: 2px;
+  width: 40%;
+  margin: 20px auto;
+  background-color: rgb(238, 232, 232);
 }
