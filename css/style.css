@@ -1,19 +1,36 @@
 body {
-  width: 80%;
   margin: auto;
+  background-color: rgb(7, 28, 56);
+  width: 85%;
+}
+
+h1 {
+  width: 50%;
+  text-align: center;
+  margin: 20px auto;
+  font-size: 35px;
+  color: whitesmoke;
+  font-family: 'Fjalla One', sans-serif;
 }
 
 img {
   display: inline-block;
-  width: 10%;
-  max-height: 431px;
-  margin: auto 10px;
-  outline: 2px solid black;
+  width: 120px;
+  min-height: 120px;
+  max-height: 120px;
+  margin: 10px 10px;
+  border: 8px solid rgb(68, 116, 179);
+  border-radius: 5px;
+  border-style: outset;
   padding: 10px;
 }
 
+img:hover {
+  border: 8px solid rgb(193, 207, 224);
+}
+
 #img-container {
-  outline: 3px solid black;
+  outline: 3px solid rgb(245, 245, 245);
   padding: 20px;
   margin: 20px auto;
   text-align: center;
@@ -22,6 +39,34 @@ img {
 
 #data {
   text-align: center;
-  margin-top: 50px;
+  width: 30%;
+  margin: 20px auto;
+  color: whitesmoke;
+  font-family: 'Source Code Pro', monospace;
 }
 
+#data > p {
+  margin-bottom: 10px;
+}
+
+#vote-max {
+  font-size: 18px;
+  font-style: italic;
+}
+
+
+#chartContainer {
+  display: none;
+  width: 75%;
+  margin: auto;
+  border: 3px solid rgb(245, 245, 245);
+  border-style: outset;
+  padding: 10px;
+}
+
+.bar {
+  height: 2px;
+  width: 40%;
+  margin: 20px auto;
+  background-color: rgb(238, 232, 232);
+}

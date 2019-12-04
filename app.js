@@ -8,15 +8,21 @@ var imgContainer = document.getElementById('img-container');
 // var imgOne = document.getElementById('imgOne');
 // var imgTwo = document.getElementById('imgTwo');
 // var imgThree = document.getElementById('imgThree');
-
+var chartContainer = document.getElementById('chartContainer');
 
 var dataEl = document.getElementById('data');
 
-var voteMax = 10;
+var voteMax = 25;
+var totalImages = 3;
 
 var picArray = [];
 
-var totalImages = 5;
+
+var prevSetIndexes = [];
+
+var namesArray = [];
+var viewsArray = [];
+var clicksArray = [];
 
 // ======= end global variables =======
 
@@ -40,23 +46,23 @@ function randomIndex(max) {
 
 // creates picture objects which stores in picArray
 function populateArray() {
-  new Picture('bag', 'Bag');
-  new Picture('banana', 'Banana');
+  new Picture('bag', 'R2D2 Luggage');
+  new Picture('banana', 'Banana Slicer');
   new Picture('bathroom', 'Bathroom');
-  new Picture('boots', 'Boots');
-  new Picture('breakfast', 'Breakfast');
-  new Picture('bubblegum', 'Bubblegum');
-  new Picture('chair', 'Chair');
-  new Picture('cthulhu', 'Cthulhu');
+  new Picture('boots', 'Rain Boots');
+  new Picture('breakfast', 'Breakfast Oven');
+  new Picture('bubblegum', 'Meat Bubblegum');
+  new Picture('chair', 'Red Chair');
+  new Picture('cthulhu', 'Cthulhu Figurine');
   new Picture('dog-duck', 'Dog Duck');
-  new Picture('dragon', 'Dragon');
-  new Picture('pen', 'Pen');
+  new Picture('dragon', 'Dragon Meat');
+  new Picture('pen', 'Utensil Pen');
   new Picture('pet-sweep', 'Pet Sweep');
-  new Picture('scissors', 'Scissors');
+  new Picture('scissors', 'Pizza Scissors');
   new Picture('shark', 'Shark');
-  new Picture('sweep', 'Sweep');
+  new Picture('sweep', 'Baby Sweep');
   new Picture('tauntaun', 'Tauntaun');
-  new Picture('unicorn', 'Unicorn');
+  new Picture('unicorn', 'Unicorn Meat');
   new Picture('usb', 'USB');
   new Picture('water-can', 'Water Can');
   new Picture('wine-glass', 'Wine Glass');
@@ -70,36 +76,33 @@ var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}
 
 showVotesLeft();
 
-function generatePics () {
-  removeImages();
+function createImgTags () {
+  for (var i = 0; i < totalImages; i++) {
+    var img = document.createElement('img');
+    imgContainer.appendChild(img);
+  }
+}
 
+createImgTags();
+
+function generatePics () {
+  var imgElArray = document.getElementsByTagName('img');
   var indexArray = [];
-  for (var j = 0; j < totalImages; j++) {
+  for (var i = 0; i < imgElArray.length; i++) {
     var index1 = randomIndex(picArray.length);
 
-    while(indexArray.includes(index1) || picArray[index1].prevSet) {
+    while(indexArray.includes(index1) || prevSetIndexes.includes(index1)) {
       index1 = randomIndex(picArray.length);
     }
     indexArray.push(index1);
 
-    var img = document.createElement('img');
-
-    img.src = picArray[index1].src;
-    img.title = picArray[index1].name;
-    img.alt = picArray[index1].name;
+    imgElArray[i].src = picArray[index1].src;
+    imgElArray[i].title = picArray[index1].name;
+    imgElArray[i].alt = picArray[index1].name;
     picArray[index1].viewed++;
-    imgContainer.appendChild(img);
   }
 
-  for (var h = 0; h < picArray.length; h++) {
-    picArray[h].prevSet = false;
-  }
-
-  for (var i = 0; i < indexArray.length; i++) {
-
-    picArray[indexArray[i]].prevSet = true;
-  }
-  console.table(picArray);
+  prevSetIndexes = indexArray;
 }
 
 generatePics();
@@ -114,17 +117,32 @@ function displayList() {
   dataEl.appendChild(ulEl);
 }
 
-function removeImages() {
-  var imageToRemove = imgContainer.lastChild;
-  while (imageToRemove) {
-    imageToRemove.remove();
-    imageToRemove = imgContainer.lastChild;
+// function removeImages() {
+//   var imageToRemove = imgContainer.lastChild;
+//   while (imageToRemove) {
+//     imageToRemove.remove();
+//     imageToRemove = imgContainer.lastChild;
+//   }
+// }
+
+function show (elem) {
+  elem.style.display = 'block';
+}
+
+function hide (elem) {
+  elem.style.display = 'none';
+}
+
+function popDataArrays() {
+  for (var i = 0; i < picArray.length; i++) {
+    namesArray.push(picArray[i].name);
+    viewsArray.push(picArray[i].viewed);
+    clicksArray.push(picArray[i].clicked);
   }
 }
 
 
 // ======= end global functions =======
-
 
 
 // ======= event listeners =======
@@ -147,9 +165,60 @@ function handleClick(event) {
     } else {
       imgContainer.removeEventListener('click', handleClick);
       displayList();
-      removeImages();
+      hide(imgContainer);
+      popDataArrays();
+      show(chartContainer);
+      displayChart();
+      hide(dataEl);
     }
   }
 }
 
 // ======= end event listeners =======
+
+
+// ======= ChartJS =======
+
+
+function displayChart () {
+  Chart.defaults.global.animation.duration = 1600;
+  Chart.defaults.global.animation.easing = 'easeOutCirc';
+  Chart.defaults.global.defaultFontColor = 'rgb(245, 245, 245)';
+
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: namesArray,
+      datasets: [{
+        label: 'Votes',
+        backgroundColor: 'rgb(76, 173, 252)',
+        borderColor: 'rgb(76, 173, 252)',
+        data: clicksArray
+      },
+      {
+        label: 'Views',
+        backgroundColor: 'rgb(245, 245, 245)',
+        borderColor: 'rgb(245, 245, 245)',
+        data: viewsArray
+      }]
+    },
+
+    // Configuration options go here
+    options: {
+      legend: {
+        position: 'bottom'
+      },
+      title: {
+        text: 'Voting Results',
+        display: true,
+        fontSize: 18,
+        padding: 30,
+        fontColor: 'rgb(245, 245, 245)'
+      }
+    }
+  });
+}
