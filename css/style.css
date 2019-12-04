@@ -5,8 +5,9 @@ body {
 
 img {
   display: inline-block;
-  width: 10%;
-  max-height: 431px;
+  width: 120px;
+  min-height: 120px;
+  max-height: 120px;
   margin: auto 10px;
   outline: 2px solid black;
   padding: 10px;

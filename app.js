@@ -12,8 +12,8 @@ var imgContainer = document.getElementById('img-container');
 
 var dataEl = document.getElementById('data');
 
-var voteMax = 10;
-var totalImages = 3;
+var voteMax = 15;
+var totalImages = 4;
 
 var picArray = [];
 
@@ -76,11 +76,19 @@ var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}
 
 showVotesLeft();
 
-function generatePics () {
-  removeImages();
+function createImgTags () {
+  for (var i = 0; i < totalImages; i++) {
+    var img = document.createElement('img');
+    imgContainer.appendChild(img);
+  }
+}
 
+createImgTags();
+
+function generatePics () {
+  var imgElArray = document.getElementsByTagName('img');
   var indexArray = [];
-  for (var j = 0; j < totalImages; j++) {
+  for (var i = 0; i < imgElArray.length; i++) {
     var index1 = randomIndex(picArray.length);
 
     while(indexArray.includes(index1) || prevSetIndexes.includes(index1)) {
@@ -88,26 +96,13 @@ function generatePics () {
     }
     indexArray.push(index1);
 
-    var img = document.createElement('img');
-
-    img.src = picArray[index1].src;
-    img.title = picArray[index1].name;
-    img.alt = picArray[index1].name;
+    imgElArray[i].src = picArray[index1].src;
+    imgElArray[i].title = picArray[index1].name;
+    imgElArray[i].alt = picArray[index1].name;
     picArray[index1].viewed++;
-    imgContainer.appendChild(img);
   }
 
   prevSetIndexes = indexArray;
-
-  // for (var h = 0; h < picArray.length; h++) {
-  //   picArray[h].prevSet = false;
-  // }
-
-  // for (var i = 0; i < indexArray.length; i++) {
-
-  //   picArray[indexArray[i]].prevSet = true;
-  // }
-  console.table(picArray);
 }
 
 generatePics();
@@ -130,7 +125,7 @@ function removeImages() {
   }
 }
 
-function createDataArrays() {
+function popDataArrays() {
   for (var i = 0; i < picArray.length; i++) {
     namesArray.push(picArray[i].name);
     viewsArray.push(picArray[i].viewed);
@@ -164,7 +159,7 @@ function handleClick(event) {
       imgContainer.removeEventListener('click', handleClick);
       displayList();
       removeImages();
-      createDataArrays();
+      popDataArrays();
       displayChart();
     }
   }
