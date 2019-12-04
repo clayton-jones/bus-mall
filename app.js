@@ -8,7 +8,7 @@ var imgContainer = document.getElementById('img-container');
 // var imgOne = document.getElementById('imgOne');
 // var imgTwo = document.getElementById('imgTwo');
 // var imgThree = document.getElementById('imgThree');
-
+var chartContainer = document.getElementById('chartContainer');
 
 var dataEl = document.getElementById('data');
 
@@ -46,23 +46,23 @@ function randomIndex(max) {
 
 // creates picture objects which stores in picArray
 function populateArray() {
-  new Picture('bag', 'Bag');
-  new Picture('banana', 'Banana');
+  new Picture('bag', 'R2D2 Luggage');
+  new Picture('banana', 'Banana Slicer');
   new Picture('bathroom', 'Bathroom');
-  new Picture('boots', 'Boots');
-  new Picture('breakfast', 'Breakfast');
-  new Picture('bubblegum', 'Bubblegum');
-  new Picture('chair', 'Chair');
-  new Picture('cthulhu', 'Cthulhu');
+  new Picture('boots', 'Rain Boots');
+  new Picture('breakfast', 'Breakfast Oven');
+  new Picture('bubblegum', 'Meat Bubblegum');
+  new Picture('chair', 'Red Chair');
+  new Picture('cthulhu', 'Cthulhu Figurine');
   new Picture('dog-duck', 'Dog Duck');
-  new Picture('dragon', 'Dragon');
-  new Picture('pen', 'Pen');
+  new Picture('dragon', 'Dragon Meat');
+  new Picture('pen', 'Utensil Pen');
   new Picture('pet-sweep', 'Pet Sweep');
-  new Picture('scissors', 'Scissors');
+  new Picture('scissors', 'Pizza Scissors');
   new Picture('shark', 'Shark');
-  new Picture('sweep', 'Sweep');
+  new Picture('sweep', 'Baby Sweep');
   new Picture('tauntaun', 'Tauntaun');
-  new Picture('unicorn', 'Unicorn');
+  new Picture('unicorn', 'Unicorn Meat');
   new Picture('usb', 'USB');
   new Picture('water-can', 'Water Can');
   new Picture('wine-glass', 'Wine Glass');
@@ -117,12 +117,20 @@ function displayList() {
   dataEl.appendChild(ulEl);
 }
 
-function removeImages() {
-  var imageToRemove = imgContainer.lastChild;
-  while (imageToRemove) {
-    imageToRemove.remove();
-    imageToRemove = imgContainer.lastChild;
-  }
+// function removeImages() {
+//   var imageToRemove = imgContainer.lastChild;
+//   while (imageToRemove) {
+//     imageToRemove.remove();
+//     imageToRemove = imgContainer.lastChild;
+//   }
+// }
+
+function show (elem) {
+  elem.style.display = 'block';
+}
+
+function hide (elem) {
+  elem.style.display = 'none';
 }
 
 function popDataArrays() {
@@ -135,7 +143,6 @@ function popDataArrays() {
 
 
 // ======= end global functions =======
-
 
 
 // ======= event listeners =======
@@ -158,9 +165,11 @@ function handleClick(event) {
     } else {
       imgContainer.removeEventListener('click', handleClick);
       displayList();
-      removeImages();
+      hide(imgContainer);
       popDataArrays();
+      show(chartContainer);
       displayChart();
+      hide(dataEl);
     }
   }
 }
