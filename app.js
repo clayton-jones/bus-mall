@@ -45,7 +45,7 @@ function randomIndex(max) {
 }
 
 // creates picture objects which stores in picArray
-function populateArray() {
+function populatePictures() {
   new Picture('bag', 'R2D2 Luggage');
   new Picture('banana', 'Banana Slicer');
   new Picture('bathroom', 'Bathroom');
@@ -68,13 +68,11 @@ function populateArray() {
   new Picture('wine-glass', 'Wine Glass');
 }
 
-populateArray();
 
 // displays votes left to user
 var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}`;
 };
 
-showVotesLeft();
 
 function createImgTags () {
   for (var i = 0; i < totalImages; i++) {
@@ -83,7 +81,6 @@ function createImgTags () {
   }
 }
 
-createImgTags();
 
 function generatePics () {
   var imgElArray = document.getElementsByTagName('img');
@@ -105,7 +102,6 @@ function generatePics () {
   prevSetIndexes = indexArray;
 }
 
-generatePics();
 
 function displayList() {
   var ulEl = document.createElement('ul');
@@ -117,13 +113,13 @@ function displayList() {
   dataEl.appendChild(ulEl);
 }
 
-// function removeImages() {
-//   var imageToRemove = imgContainer.lastChild;
-//   while (imageToRemove) {
-//     imageToRemove.remove();
-//     imageToRemove = imgContainer.lastChild;
-//   }
-// }
+function onPageLoad() {
+  populatePictures();
+  showVotesLeft();
+  createImgTags();
+  generatePics();
+
+}
 
 function show (elem) {
   elem.style.display = 'block';
@@ -222,3 +218,5 @@ function displayChart () {
     }
   });
 }
+
+onPageLoad();
