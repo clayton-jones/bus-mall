@@ -2,35 +2,41 @@
 
 // ======= global variables =======
 
+// container locations
 var voteMaxEl = document.getElementById('vote-max');
-
 var imgContainer = document.getElementById('img-container');
-// var imgOne = document.getElementById('imgOne');
-// var imgTwo = document.getElementById('imgTwo');
-// var imgThree = document.getElementById('imgThree');
 var chartContainer = document.getElementById('chartContainer');
 var buttonContainer = document.getElementById('buttons');
 var clearDataButton = document.getElementById('clear');
-clearDataButton.addEventListener('click', clearData);
 var voteAgainButton = document.getElementById('vote-again');
-voteAgainButton.addEventListener('click', voteAgain);
 
-// var dataEl = document.getElementById('data');
-
+// determines votes
 var voteMax = 25;
+
+// determines how many pictures are displayed. breaks if > 20
 var totalImages = 3;
 
+// to store pictuer objects
 var picArray = [];
 
-
+// for testing duplicate pictures from last set
 var prevSetIndexes = [];
 
+// data for chart
 var namesArray = [];
 var viewsArray = [];
 var clicksArray = [];
 
 // ======= end global variables =======
 
+
+// ======= event listeners =======
+
+imgContainer.addEventListener('click', handleClick);
+voteAgainButton.addEventListener('click', voteAgain);
+clearDataButton.addEventListener('click', clearData);
+
+// ======= end event listeners =======
 
 
 // picture constructor function
@@ -64,6 +70,8 @@ function removeById (id) {
 
 // ======= End Helper Functions =======
 
+// ======= Core Functions =======
+
 // creates picture objects which stores in picArray
 function populatePictures() {
   new Picture('bag', 'R2D2 Luggage');
@@ -93,7 +101,7 @@ function populatePictures() {
 var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}`;
 };
 
-
+// creates img tags
 function createImgTags () {
   if (document.getElementsByTagName('img').length === 0) {
     for (var i = 0; i < totalImages; i++) {
@@ -103,7 +111,7 @@ function createImgTags () {
   }
 }
 
-
+// adds pictures to img tags
 function generatePics () {
   var imgElArray = document.getElementsByTagName('img');
   var indexArray = [];
@@ -124,17 +132,7 @@ function generatePics () {
   prevSetIndexes = indexArray;
 }
 
-
-// function displayList() {
-//   var ulEl = document.createElement('ul');
-//   for (var i = 0; i < picArray.length; i++) {
-//     var liEl = document.createElement('li');
-//     liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
-//     ulEl.appendChild(liEl);
-//   }
-//   dataEl.appendChild(ulEl);
-// }
-
+// everthing I want to happen on page load/refresh
 function onPageLoad() {
   if (localStorage.getItem('pictures')) {
     picArray = JSON.parse(localStorage.getItem('pictures'));
@@ -148,32 +146,13 @@ function onPageLoad() {
   generatePics();
 }
 
+// stores data to localStorage
 function storeData() {
   var stringifyArray = JSON.stringify(picArray);
   localStorage.setItem('pictures', stringifyArray);
 }
 
-// ======= Button Functions =======
-
-function clearData() {
-  if (localStorage.pictures) {
-    localStorage.removeItem('pictures');
-  }
-}
-
-function voteAgain() {
-  emptyDataArrays();
-  hide(chartContainer);
-  removeById('myChart');
-  // document.getElementById('myChart').remove();
-  hide(buttonContainer);
-  show(imgContainer);
-  voteMax = 25;
-  onPageLoad();
-}
-
-// ======= End Button Functions =======
-
+// adds picture data to three seperate arrays
 function popDataArrays() {
   for (var i = 0; i < picArray.length; i++) {
     namesArray.push(picArray[i].name);
@@ -182,23 +161,15 @@ function popDataArrays() {
   }
 }
 
+// clears the three data arrays to prep for re-population
 function emptyDataArrays() {
   namesArray = [];
   viewsArray = [];
   clicksArray = [];
 }
 
-
-// ======= end global functions =======
-
-
-// ======= event listeners =======
-
-imgContainer.addEventListener('click', handleClick);
-
 function handleClick(event) {
   if (event.target.src) {
-
     voteMax--;
     showVotesLeft();
     if (voteMax > 0) {
@@ -210,24 +181,41 @@ function handleClick(event) {
       }
       generatePics();
     } else {
-      // imgContainer.removeEventListener('click', handleClick);
-      // displayList();
       hide(imgContainer);
       popDataArrays();
       show(chartContainer);
       displayChart();
-      // hide(dataEl);
       show(buttonContainer);
       storeData();
     }
   }
 }
 
-// ======= end event listeners =======
+// ======= end core functions =======
+
+
+// ======= button functions =======
+
+function clearData() {
+  if (localStorage.pictures) {
+    localStorage.removeItem('pictures');
+  }
+}
+
+function voteAgain() {
+  emptyDataArrays();
+  hide(chartContainer);
+  removeById('myChart');
+  hide(buttonContainer);
+  show(imgContainer);
+  voteMax = 25;
+  onPageLoad();
+}
+
+// ======= end button functions =======
 
 
 // ======= ChartJS =======
-
 
 function displayChart () {
   var canvasEl = document.createElement('canvas');
