@@ -9,8 +9,13 @@ var imgContainer = document.getElementById('img-container');
 // var imgTwo = document.getElementById('imgTwo');
 // var imgThree = document.getElementById('imgThree');
 var chartContainer = document.getElementById('chartContainer');
+var buttonContainer = document.getElementById('buttons');
+var clearDataButton = document.getElementById('clear');
+clearDataButton.addEventListener('click', clearData);
+var voteAgainButton = document.getElementById('vote-again');
+voteAgainButton.addEventListener('click', voteAgain);
 
-var dataEl = document.getElementById('data');
+// var dataEl = document.getElementById('data');
 
 var voteMax = 25;
 var totalImages = 3;
@@ -39,10 +44,26 @@ function Picture(src, name) {
   picArray.push(this);
 }
 
+// ======= Helper Functions =======
+
 // random function from MDN
 function randomIndex(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
+function show (elem) {
+  elem.style.display = 'block';
+}
+
+function hide (elem) {
+  elem.style.display = 'none';
+}
+
+function removeById (id) {
+  document.getElementById(id).remove();
+}
+
+// ======= End Helper Functions =======
 
 // creates picture objects which stores in picArray
 function populatePictures() {
@@ -75,15 +96,19 @@ var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}
 
 
 function createImgTags () {
-  for (var i = 0; i < totalImages; i++) {
-    var img = document.createElement('img');
-    imgContainer.appendChild(img);
+  if (document.getElementsByTagName('img').length === 0) {
+    for (var i = 0; i < totalImages; i++) {
+      var img = document.createElement('img');
+      imgContainer.appendChild(img);
+    }
   }
 }
 
 
 function generatePics () {
+  console.log('picArray: ', picArray);
   var imgElArray = document.getElementsByTagName('img');
+  console.log('imgElArray: ', imgElArray);
   var indexArray = [];
   for (var i = 0; i < imgElArray.length; i++) {
     var index1 = randomIndex(picArray.length);
@@ -98,27 +123,30 @@ function generatePics () {
     imgElArray[i].alt = picArray[index1].name;
     picArray[index1].viewed++;
   }
+  console.log('indexArray: ' ,indexArray);
 
   prevSetIndexes = indexArray;
 }
 
 
-function displayList() {
-  var ulEl = document.createElement('ul');
-  for (var i = 0; i < picArray.length; i++) {
-    var liEl = document.createElement('li');
-    liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
-    ulEl.appendChild(liEl);
-  }
-  dataEl.appendChild(ulEl);
-}
+// function displayList() {
+//   var ulEl = document.createElement('ul');
+//   for (var i = 0; i < picArray.length; i++) {
+//     var liEl = document.createElement('li');
+//     liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
+//     ulEl.appendChild(liEl);
+//   }
+//   dataEl.appendChild(ulEl);
+// }
 
 function onPageLoad() {
   if (localStorage.getItem('pictures')) {
     picArray = JSON.parse(localStorage.getItem('pictures'));
-  } else {
+  } else if (picArray.length === 0) {
     populatePictures();
   }
+  hide(chartContainer);
+  show(imgContainer);
   showVotesLeft();
   createImgTags();
   generatePics();
@@ -130,17 +158,29 @@ function storeData() {
   localStorage.setItem('pictures', stringifyArray);
 }
 
-// function clearData() {
+// ======= Button Functions =======
 
-// }
-
-function show (elem) {
-  elem.style.display = 'block';
+function clearData() {
+  if (localStorage.pictures) {
+    localStorage.removeItem('pictures');
+    console.log('Picture data is cleared!');
+  } else {
+    console.log('No data to clear');
+  }
 }
 
-function hide (elem) {
-  elem.style.display = 'none';
+function voteAgain() {
+  emptyDataArrays();
+  hide(chartContainer);
+  removeById('myChart');
+  // document.getElementById('myChart').remove();
+  hide(buttonContainer);
+  show(imgContainer);
+  voteMax = 25;
+  onPageLoad();
 }
+
+// ======= End Button Functions =======
 
 function popDataArrays() {
   for (var i = 0; i < picArray.length; i++) {
@@ -148,6 +188,12 @@ function popDataArrays() {
     viewsArray.push(picArray[i].viewed);
     clicksArray.push(picArray[i].clicked);
   }
+}
+
+function emptyDataArrays() {
+  namesArray = [];
+  viewsArray = [];
+  clicksArray = [];
 }
 
 
@@ -172,13 +218,14 @@ function handleClick(event) {
       }
       generatePics();
     } else {
-      imgContainer.removeEventListener('click', handleClick);
-      displayList();
+      // imgContainer.removeEventListener('click', handleClick);
+      // displayList();
       hide(imgContainer);
       popDataArrays();
       show(chartContainer);
       displayChart();
-      hide(dataEl);
+      // hide(dataEl);
+      show(buttonContainer);
       storeData();
     }
   }
@@ -191,6 +238,10 @@ function handleClick(event) {
 
 
 function displayChart () {
+  var canvasEl = document.createElement('canvas');
+  canvasEl.id = 'myChart';
+  chartContainer.appendChild(canvasEl);
+
   Chart.defaults.global.animation.duration = 1600;
   Chart.defaults.global.animation.easing = 'easeOutCirc';
   Chart.defaults.global.defaultFontColor = 'rgb(245, 245, 245)';

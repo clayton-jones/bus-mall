@@ -70,3 +70,7 @@ img:hover {
   margin: 20px auto;
   background-color: rgb(238, 232, 232);
 }
+
+#buttons {
+  display: none;
+}
