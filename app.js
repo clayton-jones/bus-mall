@@ -9,6 +9,7 @@ var chartContainer = document.getElementById('chartContainer');
 var buttonContainer = document.getElementById('buttons');
 var clearDataButton = document.getElementById('clear');
 var voteAgainButton = document.getElementById('vote-again');
+var dataContainer = document.getElementById('data');
 
 // determines votes
 var voteMax = 25;
@@ -181,6 +182,7 @@ function handleClick(event) {
       }
       generatePics();
     } else {
+      hide(dataContainer);
       hide(imgContainer);
       popDataArrays();
       show(chartContainer);
@@ -197,8 +199,10 @@ function handleClick(event) {
 // ======= button functions =======
 
 function clearData() {
-  if (localStorage.pictures) {
+  if (localStorage.getItem('pictures')) {
     localStorage.removeItem('pictures');
+    console.log('Data Cleared');
+    picArray = [];
   }
 }
 
@@ -209,6 +213,7 @@ function voteAgain() {
   hide(buttonContainer);
   show(imgContainer);
   voteMax = 25;
+  show(dataContainer);
   onPageLoad();
 }
 
