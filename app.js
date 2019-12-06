@@ -114,12 +114,25 @@ function displayList() {
 }
 
 function onPageLoad() {
-  populatePictures();
+  if (localStorage.getItem('pictures')) {
+    picArray = JSON.parse(localStorage.getItem('pictures'));
+  } else {
+    populatePictures();
+  }
   showVotesLeft();
   createImgTags();
   generatePics();
-
 }
+
+function storeData() {
+  var stringifyArray = JSON.stringify(picArray);
+  console.log('stringifyArray:', stringifyArray);
+  localStorage.setItem('pictures', stringifyArray);
+}
+
+// function clearData() {
+
+// }
 
 function show (elem) {
   elem.style.display = 'block';
@@ -166,6 +179,7 @@ function handleClick(event) {
       show(chartContainer);
       displayChart();
       hide(dataEl);
+      storeData();
     }
   }
 }
