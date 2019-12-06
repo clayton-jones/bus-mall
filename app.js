@@ -137,11 +137,11 @@ function generatePics () {
 function onPageLoad() {
   if (localStorage.getItem('pictures')) {
     picArray = JSON.parse(localStorage.getItem('pictures'));
-  } else if (picArray.length === 0) {
+  } else {
     populatePictures();
   }
-  hide(chartContainer);
-  show(imgContainer);
+  // hide(chartContainer);
+  // show(imgContainer);
   showVotesLeft();
   createImgTags();
   generatePics();
