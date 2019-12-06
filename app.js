@@ -32,7 +32,6 @@ var clicksArray = [];
 // ======= end global variables =======
 
 
-// ======= global functions =======
 
 // picture constructor function
 function Picture(src, name) {
@@ -106,9 +105,7 @@ function createImgTags () {
 
 
 function generatePics () {
-  console.log('picArray: ', picArray);
   var imgElArray = document.getElementsByTagName('img');
-  console.log('imgElArray: ', imgElArray);
   var indexArray = [];
   for (var i = 0; i < imgElArray.length; i++) {
     var index1 = randomIndex(picArray.length);
@@ -123,7 +120,6 @@ function generatePics () {
     imgElArray[i].alt = picArray[index1].name;
     picArray[index1].viewed++;
   }
-  console.log('indexArray: ' ,indexArray);
 
   prevSetIndexes = indexArray;
 }
@@ -154,7 +150,6 @@ function onPageLoad() {
 
 function storeData() {
   var stringifyArray = JSON.stringify(picArray);
-  console.log('stringifyArray:', stringifyArray);
   localStorage.setItem('pictures', stringifyArray);
 }
 
@@ -163,9 +158,6 @@ function storeData() {
 function clearData() {
   if (localStorage.pictures) {
     localStorage.removeItem('pictures');
-    console.log('Picture data is cleared!');
-  } else {
-    console.log('No data to clear');
   }
 }
 

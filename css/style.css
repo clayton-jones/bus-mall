@@ -20,7 +20,7 @@ img {
   max-height: 120px;
   margin: 10px 10px;
   border: 8px solid rgb(68, 116, 179);
-  border-radius: 5px;
+  /* border-radius: 5px; */
   border-style: outset;
   padding: 10px;
 }
@@ -73,4 +73,26 @@ img:hover {
 
 #buttons {
   display: none;
+  text-align: center;
+  margin: 20px auto;
+}
+
+button {
+  background-color: rgb(7, 28, 56);
+  color: rgb(245, 245, 245);
+  padding: 5px;
+  margin: 0 10px;
+  font-family: 'Source Code Pro', monospace;
+  border: 2px solid rgb(245, 245, 245);
+  border-style: outset;
+  box-shadow: 0 1px rgb(12, 8, 8);
+}
+
+button:hover {
+  background-color: rgb(245, 245, 245);
+  color: rgb(7, 28, 56);
+}
+
+button:active {
+  transform: translateY(1px);
 }
