@@ -2,24 +2,27 @@
 
 // ======= global variables =======
 
+// container locations
 var voteMaxEl = document.getElementById('vote-max');
-
 var imgContainer = document.getElementById('img-container');
-// var imgOne = document.getElementById('imgOne');
-// var imgTwo = document.getElementById('imgTwo');
-// var imgThree = document.getElementById('imgThree');
 var chartContainer = document.getElementById('chartContainer');
+var buttonContainer = document.getElementById('buttons');
+var clearDataButton = document.getElementById('clear');
+var voteAgainButton = document.getElementById('vote-again');
 
-var dataEl = document.getElementById('data');
-
+// determines votes
 var voteMax = 25;
+
+// determines how many pictures are displayed. breaks if > 20
 var totalImages = 3;
 
+// to store pictuer objects
 var picArray = [];
 
-
+// for testing duplicate pictures from last set
 var prevSetIndexes = [];
 
+// data for chart
 var namesArray = [];
 var viewsArray = [];
 var clicksArray = [];
@@ -27,7 +30,14 @@ var clicksArray = [];
 // ======= end global variables =======
 
 
-// ======= global functions =======
+// ======= event listeners =======
+
+imgContainer.addEventListener('click', handleClick);
+voteAgainButton.addEventListener('click', voteAgain);
+clearDataButton.addEventListener('click', clearData);
+
+// ======= end event listeners =======
+
 
 // picture constructor function
 function Picture(src, name) {
@@ -39,13 +49,31 @@ function Picture(src, name) {
   picArray.push(this);
 }
 
+// ======= Helper Functions =======
+
 // random function from MDN
 function randomIndex(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+function show (elem) {
+  elem.style.display = 'block';
+}
+
+function hide (elem) {
+  elem.style.display = 'none';
+}
+
+function removeById (id) {
+  document.getElementById(id).remove();
+}
+
+// ======= End Helper Functions =======
+
+// ======= Core Functions =======
+
 // creates picture objects which stores in picArray
-function populateArray() {
+function populatePictures() {
   new Picture('bag', 'R2D2 Luggage');
   new Picture('banana', 'Banana Slicer');
   new Picture('bathroom', 'Bathroom');
@@ -68,23 +96,22 @@ function populateArray() {
   new Picture('wine-glass', 'Wine Glass');
 }
 
-populateArray();
 
 // displays votes left to user
 var showVotesLeft = () => { voteMaxEl.textContent = `Votes remaining: ${voteMax}`;
 };
 
-showVotesLeft();
-
+// creates img tags
 function createImgTags () {
-  for (var i = 0; i < totalImages; i++) {
-    var img = document.createElement('img');
-    imgContainer.appendChild(img);
+  if (document.getElementsByTagName('img').length === 0) {
+    for (var i = 0; i < totalImages; i++) {
+      var img = document.createElement('img');
+      imgContainer.appendChild(img);
+    }
   }
 }
 
-createImgTags();
-
+// adds pictures to img tags
 function generatePics () {
   var imgElArray = document.getElementsByTagName('img');
   var indexArray = [];
@@ -105,34 +132,27 @@ function generatePics () {
   prevSetIndexes = indexArray;
 }
 
-generatePics();
-
-function displayList() {
-  var ulEl = document.createElement('ul');
-  for (var i = 0; i < picArray.length; i++) {
-    var liEl = document.createElement('li');
-    liEl.textContent = `${picArray[i].name} had ${picArray[i].clicked} votes and was shown ${picArray[i].viewed} times`;
-    ulEl.appendChild(liEl);
+// everthing I want to happen on page load/refresh
+function onPageLoad() {
+  if (localStorage.getItem('pictures')) {
+    picArray = JSON.parse(localStorage.getItem('pictures'));
+  } else if (picArray.length === 0) {
+    populatePictures();
   }
-  dataEl.appendChild(ulEl);
+  hide(chartContainer);
+  show(imgContainer);
+  showVotesLeft();
+  createImgTags();
+  generatePics();
 }
 
-// function removeImages() {
-//   var imageToRemove = imgContainer.lastChild;
-//   while (imageToRemove) {
-//     imageToRemove.remove();
-//     imageToRemove = imgContainer.lastChild;
-//   }
-// }
-
-function show (elem) {
-  elem.style.display = 'block';
+// stores data to localStorage
+function storeData() {
+  var stringifyArray = JSON.stringify(picArray);
+  localStorage.setItem('pictures', stringifyArray);
 }
 
-function hide (elem) {
-  elem.style.display = 'none';
-}
-
+// adds picture data to three seperate arrays
 function popDataArrays() {
   for (var i = 0; i < picArray.length; i++) {
     namesArray.push(picArray[i].name);
@@ -141,17 +161,15 @@ function popDataArrays() {
   }
 }
 
-
-// ======= end global functions =======
-
-
-// ======= event listeners =======
-
-imgContainer.addEventListener('click', handleClick);
+// clears the three data arrays to prep for re-population
+function emptyDataArrays() {
+  namesArray = [];
+  viewsArray = [];
+  clicksArray = [];
+}
 
 function handleClick(event) {
   if (event.target.src) {
-
     voteMax--;
     showVotesLeft();
     if (voteMax > 0) {
@@ -163,24 +181,47 @@ function handleClick(event) {
       }
       generatePics();
     } else {
-      imgContainer.removeEventListener('click', handleClick);
-      displayList();
       hide(imgContainer);
       popDataArrays();
       show(chartContainer);
       displayChart();
-      hide(dataEl);
+      show(buttonContainer);
+      storeData();
     }
   }
 }
 
-// ======= end event listeners =======
+// ======= end core functions =======
+
+
+// ======= button functions =======
+
+function clearData() {
+  if (localStorage.pictures) {
+    localStorage.removeItem('pictures');
+  }
+}
+
+function voteAgain() {
+  emptyDataArrays();
+  hide(chartContainer);
+  removeById('myChart');
+  hide(buttonContainer);
+  show(imgContainer);
+  voteMax = 25;
+  onPageLoad();
+}
+
+// ======= end button functions =======
 
 
 // ======= ChartJS =======
 
-
 function displayChart () {
+  var canvasEl = document.createElement('canvas');
+  canvasEl.id = 'myChart';
+  chartContainer.appendChild(canvasEl);
+
   Chart.defaults.global.animation.duration = 1600;
   Chart.defaults.global.animation.easing = 'easeOutCirc';
   Chart.defaults.global.defaultFontColor = 'rgb(245, 245, 245)';
@@ -222,3 +263,5 @@ function displayChart () {
     }
   });
 }
+
+onPageLoad();
